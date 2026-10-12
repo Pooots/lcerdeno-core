@@ -42,14 +42,16 @@ export function FallingPetals({ count = 18 }: { count?: number }) {
           style={{ ...p.style, left: p.left }}
         >
           <svg
+            className="petal-sway block"
             width={p.size}
             height={p.size * 1.3}
             viewBox="0 0 20 26"
-            style={{ filter: 'drop-shadow(0 2px 3px rgb(94 67 137 / 0.18))' }}
           >
             <path
               d="M10 0 C 18 6, 20 16, 10 26 C 0 16, 2 6, 10 0 Z"
               fill={p.color}
+              stroke="rgb(94 67 137 / 0.18)"
+              strokeWidth="0.8"
             />
             <path
               d="M10 3 C 11 10, 11 17, 10 23"

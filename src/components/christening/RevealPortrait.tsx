@@ -1,13 +1,15 @@
 import { motion } from 'framer-motion'
 import { ChevronDown } from 'lucide-react'
-import { useMemo } from 'react'
+import { useEffect, useMemo } from 'react'
 import { christening } from '@/content/christening'
+import { useLiteMotion } from '@/lib/useLiteMotion'
 import { FloralCluster, Sparkle } from './Ornaments'
 import { StackedName } from './StackedName'
 
 const EASE = [0.22, 1, 0.36, 1] as const
 const GOLD = '#f3d98b'
-const PARTICLES = 16
+const PARTICLES = 14
+const PARTICLES_LITE = 7
 
 const ARCH = 'rounded-t-full rounded-b-[1.75rem]'
 
@@ -33,9 +35,18 @@ export function RevealPortrait({
   show: boolean
   onEnter: () => void
 }) {
+  const lite = useLiteMotion()
+
+  useEffect(() => {
+    const img = new Image()
+    img.src = christening.revealImage
+    img.decode?.().catch(() => {})
+  }, [])
+
+  const particleCount = lite ? PARTICLES_LITE : PARTICLES
   const particles = useMemo(
     () =>
-      Array.from({ length: PARTICLES }, (_, i) => ({
+      Array.from({ length: particleCount }, (_, i) => ({
         id: i,
         left: `${(i * 61) % 100}%`,
         size: 3 + ((i * 7) % 4),
@@ -43,42 +54,50 @@ export function RevealPortrait({
         delay: (i * 0.45) % 4,
         drift: i % 2 ? 24 : -24,
       })),
-    [],
+    [particleCount],
   )
 
   return (
     <div className="pointer-events-none absolute inset-0 overflow-hidden">
-      {particles.map((p) => (
-        <motion.span
-          key={p.id}
-          className="absolute bottom-[-2%] rounded-full bg-[radial-gradient(circle,#fff8e1,#e8c56a_60%,transparent_75%)] shadow-[0_0_10px_rgba(247,215,130,0.9)]"
-          style={{ left: p.left, width: p.size, height: p.size }}
-          initial={{ y: 0, opacity: 0 }}
-          animate={
-            show
-              ? {
-                  y: '-105vh',
-                  x: [0, p.drift, 0],
-                  opacity: [0, 1, 1, 0],
-                }
-              : { y: 0, opacity: 0 }
-          }
-          transition={{
-            duration: p.duration,
-            delay: 0.6 + p.delay,
-            repeat: Infinity,
-            ease: 'linear',
-          }}
-        />
-      ))}
+      {show
+        ? particles.map((p) => (
+            <motion.span
+              key={p.id}
+              className="absolute bottom-[-2%] rounded-full bg-[radial-gradient(circle,#fffaf0_0%,#f3d98b_45%,rgba(232,197,106,0)_75%)]"
+              style={{
+                left: p.left,
+                width: p.size * 2,
+                height: p.size * 2,
+                willChange: 'transform, opacity',
+              }}
+              initial={{ y: 0, opacity: 0 }}
+              animate={{
+                y: '-105vh',
+                x: [0, p.drift, 0],
+                opacity: [0, 1, 1, 0],
+              }}
+              transition={{
+                duration: p.duration,
+                delay: 0.6 + p.delay,
+                repeat: Infinity,
+                ease: 'linear',
+              }}
+            />
+          ))
+        : null}
 
       <div className="absolute inset-0 flex flex-col items-center justify-center px-6">
         <div className="relative w-[min(58vw,20rem,34vh)]">
           <motion.div
-            className="absolute -inset-[38%] rounded-full blur-2xl"
+            className="absolute -inset-[38%] rounded-full"
             style={{
               background:
                 'conic-gradient(from 0deg, rgba(247,215,130,0.75), rgba(185,163,220,0.55), rgba(255,248,225,0.85), rgba(212,166,64,0.6), rgba(185,163,220,0.55), rgba(247,215,130,0.75))',
+              maskImage:
+                'radial-gradient(circle, black 18%, rgba(0,0,0,0.55) 42%, transparent 68%)',
+              WebkitMaskImage:
+                'radial-gradient(circle, black 18%, rgba(0,0,0,0.55) 42%, transparent 68%)',
+              willChange: 'transform, opacity',
             }}
             initial={{ opacity: 0, scale: 0.5, rotate: 0 }}
             animate={
@@ -110,7 +129,7 @@ export function RevealPortrait({
             ].map((pos, i) => (
               <Sparkle
                 key={pos}
-                className={`absolute ${pos} drop-shadow-[0_0_6px_rgba(247,215,130,1)]`}
+                className={`absolute ${pos}`}
                 style={{ color: GOLD, animationDelay: `${i * 0.4}s` }}
               />
             ))}
@@ -159,6 +178,7 @@ export function RevealPortrait({
                 <motion.img
                   src={christening.revealImage}
                   alt={`${christening.childName} smiling in her lavender headband`}
+                  decoding="async"
                   className="size-full object-cover object-[50%_30%]"
                   initial={{ scale: 1.35 }}
                   animate={show ? { scale: 1.04 } : { scale: 1.35 }}
@@ -169,9 +189,9 @@ export function RevealPortrait({
                 className={`pointer-events-none absolute inset-0 ${ARCH} shadow-[inset_0_0_28px_rgba(61,42,87,0.28)]`}
               />
               <motion.div
-                className="pointer-events-none absolute inset-y-0 w-1/3 -skew-x-12 bg-gradient-to-r from-transparent via-white/55 to-transparent"
-                initial={{ left: '-50%' }}
-                animate={show ? { left: '130%' } : { left: '-50%' }}
+                className="pointer-events-none absolute inset-y-0 left-0 w-1/3 -skew-x-12 bg-gradient-to-r from-transparent via-white/55 to-transparent"
+                initial={{ x: '-150%' }}
+                animate={show ? { x: '400%' } : { x: '-150%' }}
                 transition={{
                   duration: 1.4,
                   ease: 'easeInOut',

@@ -179,10 +179,10 @@ body {
 @keyframes petal-sway {
   0%,
   100% {
-    margin-left: 0;
+    transform: translate3d(0, 0, 0);
   }
   50% {
-    margin-left: 36px;
+    transform: translate3d(36px, 0, 0);
   }
 }
 
@@ -230,16 +230,14 @@ body {
 }
 
 @keyframes seal-pulse {
-  0%,
-  100% {
-    box-shadow:
-      0 0 0 0 rgb(138 104 189 / 0.45),
-      0 10px 25px -8px rgb(61 42 87 / 0.6);
+  0% {
+    transform: scale(1);
+    opacity: 0.7;
   }
-  50% {
-    box-shadow:
-      0 0 0 14px rgb(138 104 189 / 0),
-      0 10px 25px -8px rgb(61 42 87 / 0.6);
+  70%,
+  100% {
+    transform: scale(1.28);
+    opacity: 0;
   }
 }
 
@@ -272,12 +270,14 @@ body {
 .petal {
   position: absolute;
   top: 0;
-  animation:
-    petal-fall var(--petal-duration, 14s) linear var(--petal-delay, 0s)
-      infinite,
-    petal-sway calc(var(--petal-duration, 14s) / 3) ease-in-out
-      var(--petal-delay, 0s) infinite;
-  will-change: transform;
+  animation: petal-fall var(--petal-duration, 14s) linear
+    var(--petal-delay, 0s) infinite;
+  will-change: transform, opacity;
+}
+
+.petal-sway {
+  animation: petal-sway calc(var(--petal-duration, 14s) / 3) ease-in-out
+    var(--petal-delay, 0s) infinite;
 }
 
 .watercolor-blob {
@@ -337,7 +337,18 @@ body {
 }
 
 .seal-pulse {
-  animation: seal-pulse 2.4s ease-in-out infinite;
+  box-shadow: 0 10px 25px -8px rgb(61 42 87 / 0.6);
+}
+
+.seal-pulse::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 9999px;
+  border: 3px solid rgb(185 163 220 / 0.85);
+  pointer-events: none;
+  animation: seal-pulse 2.4s ease-out infinite;
+  will-change: transform, opacity;
 }
 
 .spin-slow {
@@ -419,6 +430,33 @@ body {
     11px 11px;
 }
 
+/*
+ * Phones, tablets and touch devices: switch off the effects that repaint every
+ * frame (gradient text shimmer, drifting blurred blobs) and the backdrop blur
+ * that makes scrolling stutter. Everything still animates in on scroll.
+ */
+@media (max-width: 767px), (hover: none) and (pointer: coarse) {
+  .text-shimmer,
+  .text-gold {
+    animation: none;
+    background-position: 30% 50%;
+  }
+
+  .watercolor-blob {
+    animation: none;
+    will-change: auto;
+  }
+
+  .button-sheen::after {
+    animation-duration: 5s;
+  }
+
+  [class*="backdrop-blur"] {
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -430,12 +468,13 @@ body {
   .status-orb,
   .status-gold-line,
   .petal,
+  .petal-sway,
   .watercolor-blob,
   .text-shimmer,
   .text-gold,
   .sparkle,
   .marquee-track,
-  .seal-pulse,
+  .seal-pulse::after,
   .spin-slow,
   .sway,
   .button-sheen::after {

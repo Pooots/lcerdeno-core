@@ -63,8 +63,8 @@ export function VerseSection() {
             <motion.span
               key={`${word}-${i}`}
               className="mr-[0.28em] inline-block"
-              initial={{ opacity: 0, y: 14, filter: 'blur(6px)' }}
-              whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+              initial={{ opacity: 0, y: 14 }}
+              whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.6 }}
               transition={{
                 duration: 0.7,

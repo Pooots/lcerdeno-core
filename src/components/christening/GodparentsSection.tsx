@@ -1,4 +1,4 @@
-import { animate, motion, useInView } from 'framer-motion'
+﻿import { animate, motion, useInView } from 'framer-motion'
 import { Heart } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 import type { CSSProperties } from 'react'
@@ -53,13 +53,17 @@ function NameCard({
   return (
     <motion.li
       className="group relative overflow-hidden rounded-2xl border border-[#e8d29a]/25 bg-[linear-gradient(180deg,rgba(255,255,255,0.11),rgba(255,255,255,0.03))] px-3 py-3.5 text-center shadow-[0_12px_30px_-18px_rgba(0,0,0,0.6)] transition-[border-color,box-shadow] duration-300 hover:border-[#e8d29a]/80 hover:shadow-[0_0_28px_-4px_rgba(247,215,130,0.45)]"
-      initial={{ opacity: 0, y: 22, scale: 0.9, filter: 'blur(6px)' }}
-      whileInView={{ opacity: 1, y: 0, scale: 1, filter: 'blur(0px)' }}
-      viewport={{ once: true, amount: 0.4 }}
-      transition={{ duration: 0.7, ease: EASE, delay: 0.15 + index * 0.05 }}
+      initial={{ opacity: 0, y: 22 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.3 }}
+      transition={{
+        duration: 0.6,
+        ease: EASE,
+        delay: 0.1 + (index % 6) * 0.06,
+      }}
       whileHover={{ y: -4 }}
     >
-      <span className="pointer-events-none absolute inset-y-0 -left-1/2 w-1/3 -skew-x-12 bg-gradient-to-r from-transparent via-[#fff3cf]/25 to-transparent transition-[left] duration-700 ease-out group-hover:left-[130%]" />
+      <span className="pointer-events-none absolute inset-y-0 left-0 w-1/3 -translate-x-full -skew-x-12 bg-gradient-to-r from-transparent via-[#fff3cf]/25 to-transparent transition-transform duration-700 ease-out group-hover:translate-x-[400%]" />
       <span className="block text-[0.55rem] font-semibold uppercase tracking-[0.42em] text-[#e8c56a]">
         {title}
       </span>
@@ -86,9 +90,9 @@ function GodparentPanel({
       <div className="relative h-full overflow-hidden rounded-[2rem] border border-[#e8d29a]/35 bg-white/[0.05] p-5 shadow-[0_40px_80px_-40px_rgba(0,0,0,0.7)] backdrop-blur-sm sm:p-8">
         <div className="pointer-events-none absolute inset-2.5 rounded-[1.6rem] border border-dashed border-[#e8d29a]/25" />
         <motion.div
-          className="pointer-events-none absolute inset-y-0 w-1/4 -skew-x-12 bg-gradient-to-r from-transparent via-[#f7e3a3]/10 to-transparent"
-          initial={{ left: '-40%' }}
-          animate={{ left: '140%' }}
+          className="pointer-events-none absolute inset-y-0 left-0 w-1/4 -skew-x-12 bg-gradient-to-r from-transparent via-[#f7e3a3]/10 to-transparent"
+          initial={{ x: '-150%' }}
+          animate={{ x: '550%' }}
           transition={{
             duration: 2.4,
             ease: 'easeInOut',
@@ -147,13 +151,13 @@ export function GodparentsSection() {
         className="pointer-events-none absolute -left-6 top-[30%] hidden h-[34rem] -translate-y-1/2 opacity-25 xl:block"
         aria-hidden
       >
-        <GoldFloral active={false} className="h-full w-auto" />
+        <GoldFloral className="h-full" />
       </div>
       <div
         className="pointer-events-none absolute -right-6 top-[70%] hidden h-[34rem] -translate-y-1/2 -scale-x-100 opacity-25 xl:block"
         aria-hidden
       >
-        <GoldFloral active={false} className="h-full w-auto" />
+        <GoldFloral className="h-full" />
       </div>
 
       {[

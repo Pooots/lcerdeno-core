@@ -31,9 +31,9 @@ function Unit({ value, label }: { value: number; label: string }) {
           <motion.span
             key={display}
             className="font-serif text-4xl font-semibold text-primary sm:text-5xl"
-            initial={{ y: '-60%', opacity: 0, filter: 'blur(4px)' }}
-            animate={{ y: '0%', opacity: 1, filter: 'blur(0px)' }}
-            exit={{ y: '60%', opacity: 0, filter: 'blur(4px)' }}
+            initial={{ y: '-60%', opacity: 0 }}
+            animate={{ y: '0%', opacity: 1 }}
+            exit={{ y: '60%', opacity: 0 }}
             transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
           >
             {display}

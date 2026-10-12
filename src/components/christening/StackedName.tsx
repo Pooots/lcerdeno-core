@@ -70,15 +70,13 @@ export function StackedName({
       )}
       aria-label={christening.childName}
     >
-      <span
-        className={cn('relative isolate inline-block', s.lead, t.shadow)}
-        aria-hidden
-      >
+      <span className={cn('relative isolate inline-block', s.lead)} aria-hidden>
         <motion.span
           className={cn(
-            'pointer-events-none absolute left-1/2 top-[55%] -z-10 size-[0.95em] -translate-x-1/2 -translate-y-1/2 rounded-full blur-xl',
+            'pointer-events-none absolute left-1/2 top-[55%] -z-10 size-[1.1em] -translate-x-1/2 -translate-y-1/2 rounded-full',
             t.glow,
           )}
+          style={{ willChange: 'transform, opacity' }}
           initial={{ opacity: 0, scale: 0.4 }}
           animate={
             show
@@ -96,18 +94,20 @@ export function StackedName({
               : { duration: 0.3 }
           }
         />
-        <motion.span
-          className={cn('inline-block leading-[1.05]', t.text)}
-          initial={{ opacity: 0, scale: 0.6, filter: 'blur(14px)' }}
-          animate={
-            show
-              ? { opacity: 1, scale: 1, filter: 'blur(0px)' }
-              : { opacity: 0, scale: 0.6, filter: 'blur(14px)' }
-          }
-          transition={{ duration: 1.3, ease: EASE, delay }}
-        >
-          {christening.nameLead}
-        </motion.span>
+        <span className={cn('inline-block', t.shadow)}>
+          <motion.span
+            className={cn('inline-block leading-[1.05]', t.text)}
+            initial={{ opacity: 0, scale: 0.6, y: '0.12em' }}
+            animate={
+              show
+                ? { opacity: 1, scale: 1, y: 0 }
+                : { opacity: 0, scale: 0.6, y: '0.12em' }
+            }
+            transition={{ duration: 1.2, ease: EASE, delay }}
+          >
+            {christening.nameLead}
+          </motion.span>
+        </span>
         <Sparkle
           className="absolute right-[2%] top-[22%] size-[0.09em]"
           style={{ color: t.sparkle }}

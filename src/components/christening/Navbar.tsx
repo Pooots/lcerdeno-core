@@ -54,7 +54,7 @@ export function Navbar() {
       className={cn(
         'fixed inset-x-0 top-0 z-50 transition-all duration-500',
         scrolled
-          ? 'border-b border-lilac/70 bg-white/75 shadow-[0_10px_30px_-20px_rgb(61_42_87_/_0.35)] backdrop-blur-xl'
+          ? 'border-b border-lilac/70 bg-white/95 lg:bg-white/75 shadow-[0_10px_30px_-20px_rgb(61_42_87_/_0.35)] backdrop-blur-xl'
           : 'bg-transparent',
       )}
       initial={{ y: -80, opacity: 0 }}

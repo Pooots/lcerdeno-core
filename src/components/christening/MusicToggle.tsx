@@ -51,11 +51,12 @@ export function MusicToggle({
               {BARS.map((h, i) => (
                 <motion.span
                   key={i}
-                  className="w-[3px] rounded-full bg-orchid"
+                  className="h-full w-[3px] origin-bottom rounded-full bg-orchid"
+                  initial={{ scaleY: 0.25 }}
                   animate={
                     playing
-                      ? { height: ['30%', `${h * 100}%`, '40%', '85%', '30%'] }
-                      : { height: '25%' }
+                      ? { scaleY: [0.3, h, 0.4, 0.85, 0.3] }
+                      : { scaleY: 0.25 }
                   }
                   transition={
                     playing

@@ -1,5 +1,5 @@
 import { AnimatePresence, MotionConfig } from 'framer-motion'
-import { useEffect, useState } from 'react'
+import { memo, useCallback, useEffect, useState } from 'react'
 import { ChristeningLookSection } from '@/components/christening/ChristeningLookSection'
 import { DetailsSection } from '@/components/christening/DetailsSection'
 import { FallingPetals } from '@/components/christening/FallingPetals'
@@ -16,10 +16,33 @@ import { RsvpSection } from '@/components/christening/RsvpSection'
 import { VerseSection } from '@/components/christening/VerseSection'
 import { useBackgroundMusic } from '@/components/christening/useBackgroundMusic'
 import { christening } from '@/content/christening'
+import { useLiteMotion } from '@/lib/useLiteMotion'
+
+/** Memoised so music state changes don't re-render every section. */
+const PageSections = memo(function PageSections({ ready }: { ready: boolean }) {
+  return (
+    <>
+      <HeroSection ready={ready} />
+      <VerseSection />
+      <ChristeningLookSection />
+      <InvitationSection />
+      <GodparentsSection />
+      <DetailsSection />
+      <Marquee />
+      <GallerySection />
+      <RsvpSection />
+      <FooterSection />
+    </>
+  )
+})
 
 export default function ChristeningPage() {
   const [opened, setOpened] = useState(false)
+  const [prepared, setPrepared] = useState(false)
   const music = useBackgroundMusic(christening.music.src)
+  const lite = useLiteMotion()
+  const handleOpen = useCallback(() => setOpened(true), [])
+  const handlePrepare = useCallback(() => setPrepared(true), [])
 
   useEffect(() => {
     if (opened) return
@@ -38,28 +61,26 @@ export default function ChristeningPage() {
           <IntroEnvelope
             key="intro"
             onSealClick={music.play}
-            onOpen={() => setOpened(true)}
+            onPrepare={handlePrepare}
+            onOpen={handleOpen}
           />
         ) : null}
       </AnimatePresence>
 
-      <FallingPetals />
+      {opened ? <FallingPetals count={lite ? 9 : 16} /> : null}
       {opened ? <Navbar /> : null}
       {opened ? (
         <MusicToggle playing={music.playing} onToggle={music.toggle} />
       ) : null}
 
-      <main>
-        <HeroSection ready={opened} />
-        <VerseSection />
-        <ChristeningLookSection />
-        <InvitationSection />
-        <GodparentsSection />
-        <DetailsSection />
-        <Marquee />
-        <GallerySection />
-        <RsvpSection />
-        <FooterSection />
+      {/* Skip rendering the page entirely while the envelope animation runs. */}
+      <main
+        style={{
+          visibility: opened ? 'visible' : 'hidden',
+          contentVisibility: opened || prepared ? 'visible' : 'hidden',
+        }}
+      >
+        <PageSections ready={opened} />
       </main>
     </MotionConfig>
   )

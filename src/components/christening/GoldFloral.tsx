@@ -1,6 +1,6 @@
-import { motion } from 'framer-motion'
+﻿import { motion } from 'framer-motion'
 import { useId } from 'react'
-import type { CSSProperties } from 'react'
+import { cn } from '@/lib/utils'
 
 const STEM =
   'M 6 632 C 40 580, 70 540, 58 470 C 48 410, 96 370, 104 320 C 112 268, 66 236, 74 180 C 80 130, 44 92, 14 20'
@@ -171,88 +171,89 @@ function Artwork({ fill, stroke }: { fill: string; stroke: string }) {
   )
 }
 
-const FILTER_REST =
-  'drop-shadow(1px 2px 1.5px rgba(30,15,50,0.55)) drop-shadow(0px 0px 0px rgba(247,215,130,0))'
-const FILTER_GLOW =
-  'drop-shadow(1px 2px 1.5px rgba(30,15,50,0.3)) drop-shadow(0px 0px 12px rgba(247,215,130,0.95))'
+const VIEWBOX = '0 0 220 640'
 
+/**
+ * Engraved gold floral column. Every layer is a static SVG; the glow and the
+ * flash only fade their opacity, so the browser never re-rasterises the art
+ * while animating (no animated filters or masks).
+ */
 export function GoldFloral({
   active,
   delay = 0,
   className,
-  style,
 }: {
-  active: boolean
+  /** Omit for a purely decorative, non-animated floral. */
+  active?: boolean
   delay?: number
   className?: string
-  style?: CSSProperties
 }) {
   const id = useId().replace(/:/g, '')
+  const animated = active !== undefined
 
   return (
-    <motion.svg
-      viewBox="0 0 220 640"
-      preserveAspectRatio="xMinYMid meet"
-      className={className}
-      style={style}
-      aria-hidden
-      initial={{ filter: FILTER_REST }}
-      animate={{ filter: active ? FILTER_GLOW : FILTER_REST }}
-      transition={{ duration: 0.9, delay }}
-    >
-      <defs>
-        <linearGradient
-          id={`${id}-gold`}
-          gradientUnits="userSpaceOnUse"
-          x1="0"
-          y1="0"
-          x2="70"
-          y2="110"
-          spreadMethod="reflect"
-        >
-          <stop offset="0" stopColor="#f7e3a3" />
-          <stop offset="0.35" stopColor="#d4a640" />
-          <stop offset="0.55" stopColor="#fff1c4" />
-          <stop offset="0.8" stopColor="#b8862b" />
-          <stop offset="1" stopColor="#e8c56a" />
-        </linearGradient>
-        <linearGradient id={`${id}-band`} x1="0" x2="1" y1="0" y2="0">
-          <stop offset="0" stopColor="#fff" stopOpacity="0" />
-          <stop offset="0.5" stopColor="#fff" stopOpacity="1" />
-          <stop offset="1" stopColor="#fff" stopOpacity="0" />
-        </linearGradient>
-        <mask
-          id={`${id}-sheen`}
-          maskUnits="userSpaceOnUse"
-          x="-120"
-          y="-120"
-          width="460"
-          height="880"
-        >
-          <g transform="rotate(18 110 320)">
-            <motion.rect
-              y={-260}
-              width={90}
-              height={1160}
-              fill={`url(#${id}-band)`}
-              initial={{ attrX: -280 }}
-              animate={active ? { attrX: [-280, 380] } : { attrX: -280 }}
-              transition={{
-                duration: 1.3,
-                delay: delay + 0.15,
-                ease: 'easeInOut',
-                repeat: active ? 1 : 0,
-                repeatDelay: 0.15,
-              }}
-            />
-          </g>
-        </mask>
-      </defs>
+    <div className={cn('relative aspect-[220/640]', className)} aria-hidden>
+      <svg
+        viewBox={VIEWBOX}
+        preserveAspectRatio="xMinYMid meet"
+        className="absolute inset-0 size-full overflow-visible"
+      >
+        <defs>
+          <linearGradient
+            id={`${id}-gold`}
+            gradientUnits="userSpaceOnUse"
+            x1="0"
+            y1="0"
+            x2="70"
+            y2="110"
+            spreadMethod="reflect"
+          >
+            <stop offset="0" stopColor="#f7e3a3" />
+            <stop offset="0.35" stopColor="#d4a640" />
+            <stop offset="0.55" stopColor="#fff1c4" />
+            <stop offset="0.8" stopColor="#b8862b" />
+            <stop offset="1" stopColor="#e8c56a" />
+          </linearGradient>
+        </defs>
+        <g transform="translate(1.2 2.2)" opacity={0.5}>
+          <Artwork fill="#1e0f32" stroke="#1e0f32" />
+        </g>
+        <Artwork fill={`url(#${id}-gold)`} stroke="#9a7221" />
+      </svg>
 
-      <Artwork fill={`url(#${id}-gold)`} stroke="#9a7221" />
-      <g mask={`url(#${id}-sheen)`}>
-        <Artwork fill="#fff8e1" stroke="#fffbea" />
-      </g>
-    </motion.svg>
+      {animated ? (
+        <>
+          <motion.svg
+            viewBox={VIEWBOX}
+            preserveAspectRatio="xMinYMid meet"
+            className="absolute inset-0 size-full overflow-visible [&_*]:[stroke-linejoin:round] [&_*]:[stroke-width:5] [&_*]:[stroke:#ffe08a]"
+            style={{ willChange: 'opacity' }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: active ? 0.45 : 0 }}
+            transition={{ duration: 0.9, delay }}
+          >
+            <Artwork fill="#ffe08a" stroke="#ffe08a" />
+          </motion.svg>
+          <motion.svg
+            viewBox={VIEWBOX}
+            preserveAspectRatio="xMinYMid meet"
+            className="absolute inset-0 size-full overflow-visible"
+            style={{ willChange: 'opacity' }}
+            initial={{ opacity: 0 }}
+            animate={
+              active ? { opacity: [0, 0.95, 0.2, 0.7, 0] } : { opacity: 0 }
+            }
+            transition={{
+              duration: 2.2,
+              delay: delay + 0.1,
+              times: [0, 0.22, 0.48, 0.68, 1],
+            }}
+          >
+            <Artwork fill="#fff8e1" stroke="#fffbea" />
+          </motion.svg>
+        </>
+      ) : null}
+    </div>
   )
 }
+

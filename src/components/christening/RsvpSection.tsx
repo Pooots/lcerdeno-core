@@ -343,7 +343,7 @@ export function RsvpSection() {
                   className="relative space-y-7"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
-                  exit={{ opacity: 0, y: -20, filter: 'blur(6px)' }}
+                  exit={{ opacity: 0, y: -20 }}
                   transition={{ duration: 0.5 }}
                   noValidate
                 >

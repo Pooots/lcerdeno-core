@@ -16,11 +16,10 @@ const container: Variants = {
 }
 
 const item: Variants = {
-  hidden: { opacity: 0, y: 26, filter: 'blur(8px)' },
+  hidden: { opacity: 0, y: 26 },
   show: {
     opacity: 1,
     y: 0,
-    filter: 'blur(0px)',
     transition: { duration: 1, ease: EASE },
   },
 }
@@ -185,17 +184,28 @@ export function HeroSection({ ready }: { ready: boolean }) {
           />
 
           <motion.div
-            className="absolute -right-2 top-[42%] rounded-2xl border border-white bg-white/85 px-4 py-3 text-center shadow-[0_20px_40px_-24px_rgb(61_42_87_/_0.7)] backdrop-blur sm:-right-10"
-            initial={{ opacity: 0, x: 30 }}
-            animate={ready ? { opacity: 1, x: 0 } : undefined}
+            className="absolute inset-x-0 -bottom-6 z-10 flex justify-center sm:-bottom-8"
+            initial={{ opacity: 0, y: 18, scale: 0.92 }}
+            animate={ready ? { opacity: 1, y: 0, scale: 1 } : undefined}
             transition={{ duration: 1, ease: EASE, delay: 1.2 }}
           >
-            <p className="font-script text-2xl leading-none text-orchid">
-              Blessed
-            </p>
-            <p className="mt-1 text-[0.55rem] font-semibold uppercase tracking-[0.32em] text-muted-foreground">
-              &amp; dearly loved
-            </p>
+            <div className="rounded-full bg-[linear-gradient(135deg,#f7e3a3,#c8962e_35%,#fff3cf_55%,#b8862b)] p-px shadow-[0_18px_36px_-18px_rgb(61_42_87_/_0.75)]">
+              <div className="relative flex flex-col items-center rounded-full bg-[linear-gradient(180deg,#ffffff,#f7f2fd)] px-6 pb-2 pt-1.5 sm:px-10 sm:pb-3 sm:pt-2.5">
+                <span className="pointer-events-none absolute inset-[3px] rounded-full border border-[#e8d29a]/70" />
+                <p className="font-script text-2xl leading-none text-orchid sm:text-3xl">
+                  Blessed
+                </p>
+                <div className="mt-1 flex items-center gap-1.5 sm:gap-2">
+                  <span className="h-px w-3 bg-gradient-to-r from-transparent to-[#d4a640] sm:w-5" />
+                  <span className="size-1 rotate-45 bg-[#d4a640]" />
+                  <span className="mr-[-0.3em] whitespace-nowrap text-[0.48rem] font-semibold uppercase tracking-[0.3em] sm:mr-[-0.34em] sm:tracking-[0.34em] text-plum/70 sm:text-[0.55rem]">
+                    &amp; Dearly Loved
+                  </span>
+                  <span className="size-1 rotate-45 bg-[#d4a640]" />
+                  <span className="h-px w-3 bg-gradient-to-l from-transparent to-[#d4a640] sm:w-5" />
+                </div>
+              </div>
+            </div>
           </motion.div>
         </motion.div>
       </motion.div>
