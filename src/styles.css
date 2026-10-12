@@ -1,0 +1,448 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+body {
+  @apply m-0;
+  font-family: "DM Sans", ui-sans-serif, system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+@theme inline {
+  --font-display: "Cormorant Garamond", ui-serif, Georgia, serif;
+  --font-serif: "Cormorant Garamond", ui-serif, Georgia, serif;
+  --font-script: "Great Vibes", "Cormorant Garamond", cursive;
+  --font-sans: "DM Sans", ui-sans-serif, system-ui, sans-serif;
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-border: var(--border);
+  --color-ring: var(--ring);
+  --color-gold: var(--gold);
+  --color-gold-foreground: var(--gold-foreground);
+  --color-plum: var(--plum);
+  --color-orchid: var(--orchid);
+  --color-lavender: var(--lavender);
+  --color-lilac: var(--lilac);
+  --color-mist: var(--mist);
+  --color-pearl: var(--pearl);
+}
+
+:root {
+  --radius: 0.75rem;
+  --background: #fdfbff;
+  --foreground: #3a2a52;
+  --card: #ffffff;
+  --card-foreground: #3a2a52;
+  --primary: #5e4389;
+  --primary-foreground: #fbf8ff;
+  --secondary: #f1eafa;
+  --secondary-foreground: #5e4389;
+  --muted: #f8f4fd;
+  --muted-foreground: #7a6a90;
+  --accent: #b59ad9;
+  --accent-foreground: #2f2045;
+  --border: #e6dcf3;
+  --ring: #8e6cc0;
+  --gold: #c7a96b;
+  --gold-foreground: #3d2e08;
+  --plum: #3d2a57;
+  --orchid: #8a68bd;
+  --lavender: #b9a3dc;
+  --lilac: #e4d8f4;
+  --mist: #f6f1fc;
+  --pearl: #fdfbff;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  html {
+    scroll-behavior: smooth;
+  }
+  html,
+  body {
+    @apply bg-background text-foreground;
+    overflow-x: clip;
+    max-width: 100vw;
+  }
+  ::selection {
+    background: #d9c8f0;
+    color: #3d2a57;
+  }
+}
+
+/* ---------- Status page (foundation) ---------- */
+
+@keyframes status-rise {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes status-pulse {
+  0%,
+  100% {
+    opacity: 0.35;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.7;
+    transform: scale(1.05);
+  }
+}
+
+@keyframes status-shimmer {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 100% 50%;
+  }
+}
+
+.status-rise {
+  animation: status-rise 0.7s ease-out both;
+}
+
+.status-rise-delay {
+  animation: status-rise 0.7s ease-out 0.12s both;
+}
+
+.status-rise-delay-2 {
+  animation: status-rise 0.7s ease-out 0.24s both;
+}
+
+.status-orb {
+  animation: status-pulse 9s ease-in-out infinite;
+}
+
+.status-gold-line {
+  background: linear-gradient(
+    90deg,
+    transparent,
+    #c9a227 20%,
+    #e8c547 50%,
+    #c9a227 80%,
+    transparent
+  );
+  background-size: 200% 100%;
+  animation: status-shimmer 4s linear infinite;
+}
+
+/* ---------- Christening page ---------- */
+
+/* Great Vibes ships with very tight word spacing. */
+.font-script {
+  word-spacing: 0.18em;
+}
+
+@keyframes petal-fall {
+  0% {
+    transform: translate3d(0, -12vh, 0) rotate(0deg);
+    opacity: 0;
+  }
+  10% {
+    opacity: var(--petal-opacity, 0.8);
+  }
+  90% {
+    opacity: var(--petal-opacity, 0.8);
+  }
+  100% {
+    transform: translate3d(var(--petal-drift, 60px), 112vh, 0)
+      rotate(var(--petal-spin, 540deg));
+    opacity: 0;
+  }
+}
+
+@keyframes petal-sway {
+  0%,
+  100% {
+    margin-left: 0;
+  }
+  50% {
+    margin-left: 36px;
+  }
+}
+
+@keyframes watercolor-drift {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  33% {
+    transform: translate3d(30px, -24px, 0) scale(1.08);
+  }
+  66% {
+    transform: translate3d(-24px, 18px, 0) scale(0.96);
+  }
+}
+
+@keyframes text-shimmer {
+  0% {
+    background-position: 200% 50%;
+  }
+  100% {
+    background-position: -200% 50%;
+  }
+}
+
+@keyframes twinkle {
+  0%,
+  100% {
+    opacity: 0.15;
+    transform: scale(0.6) rotate(0deg);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1) rotate(45deg);
+  }
+}
+
+@keyframes marquee {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+@keyframes seal-pulse {
+  0%,
+  100% {
+    box-shadow:
+      0 0 0 0 rgb(138 104 189 / 0.45),
+      0 10px 25px -8px rgb(61 42 87 / 0.6);
+  }
+  50% {
+    box-shadow:
+      0 0 0 14px rgb(138 104 189 / 0),
+      0 10px 25px -8px rgb(61 42 87 / 0.6);
+  }
+}
+
+@keyframes spin-slow {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes sway {
+  0%,
+  100% {
+    transform: rotate(-3deg);
+  }
+  50% {
+    transform: rotate(3deg);
+  }
+}
+
+@keyframes button-sheen {
+  0% {
+    transform: translateX(-120%) skewX(-20deg);
+  }
+  60%,
+  100% {
+    transform: translateX(220%) skewX(-20deg);
+  }
+}
+
+.petal {
+  position: absolute;
+  top: 0;
+  animation:
+    petal-fall var(--petal-duration, 14s) linear var(--petal-delay, 0s)
+      infinite,
+    petal-sway calc(var(--petal-duration, 14s) / 3) ease-in-out
+      var(--petal-delay, 0s) infinite;
+  will-change: transform;
+}
+
+.watercolor-blob {
+  animation: watercolor-drift 18s ease-in-out infinite;
+  will-change: transform;
+}
+
+@layer components {
+  /* background-clip: text only paints inside the box, and script swashes
+     overflow the line box, so the padding keeps them from being cropped. */
+  .text-shimmer {
+    background-image: linear-gradient(
+      100deg,
+      #5e4389 0%,
+      #8a68bd 30%,
+      #d9c8f0 45%,
+      #8a68bd 60%,
+      #5e4389 100%
+    );
+    background-size: 200% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-box-decoration-break: clone;
+    box-decoration-break: clone;
+    color: transparent;
+    padding: 0.22em 0.2em 0.28em;
+    animation: text-shimmer 7s linear infinite;
+  }
+
+  .text-gold {
+    background-image: linear-gradient(
+      100deg,
+      #b8862b 0%,
+      #f7e3a3 22%,
+      #d4a640 42%,
+      #fff3cf 52%,
+      #c8962e 72%,
+      #f3d98b 100%
+    );
+    background-size: 200% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-box-decoration-break: clone;
+    box-decoration-break: clone;
+    color: transparent;
+    padding: 0.22em 0.2em 0.28em;
+    animation: text-shimmer 6s linear infinite;
+  }
+}
+
+.sparkle {
+  animation: twinkle 3.2s ease-in-out infinite;
+}
+
+.marquee-track {
+  animation: marquee 38s linear infinite;
+}
+
+.seal-pulse {
+  animation: seal-pulse 2.4s ease-in-out infinite;
+}
+
+.spin-slow {
+  animation: spin-slow 40s linear infinite;
+}
+
+.sway {
+  animation: sway 6s ease-in-out infinite;
+  transform-origin: bottom center;
+}
+
+.button-sheen {
+  position: relative;
+  overflow: hidden;
+}
+
+.button-sheen::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  width: 40%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgb(255 255 255 / 0.45),
+    transparent
+  );
+  animation: button-sheen 3.5s ease-in-out infinite;
+  pointer-events: none;
+}
+
+/* Scalloped lace edge used between sections */
+.scallop-bottom {
+  height: 18px;
+  background: radial-gradient(
+      circle at 14px 0,
+      var(--scallop-color, #f6f1fc) 13px,
+      transparent 14px
+    )
+    repeat-x;
+  background-size: 28px 18px;
+}
+
+.scallop-top {
+  height: 18px;
+  background: radial-gradient(
+      circle at 14px 18px,
+      var(--scallop-color, #f6f1fc) 13px,
+      transparent 14px
+    )
+    repeat-x;
+  background-size: 28px 18px;
+}
+
+/* Soft paper grain for cards */
+.paper {
+  background-color: #fffdff;
+  background-image:
+    radial-gradient(rgb(185 163 220 / 0.08) 1px, transparent 1px),
+    radial-gradient(rgb(185 163 220 / 0.05) 1px, transparent 1px);
+  background-size:
+    18px 18px,
+    11px 11px;
+  background-position:
+    0 0,
+    7px 9px;
+}
+
+/* Delicate dotted lace pattern for lavender bands */
+.lace-pattern {
+  background-image:
+    radial-gradient(circle, rgb(255 255 255 / 0.55) 1.2px, transparent 1.6px),
+    radial-gradient(circle, rgb(255 255 255 / 0.3) 1px, transparent 1.4px);
+  background-size:
+    22px 22px,
+    22px 22px;
+  background-position:
+    0 0,
+    11px 11px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .status-rise,
+  .status-rise-delay,
+  .status-rise-delay-2,
+  .status-orb,
+  .status-gold-line,
+  .petal,
+  .watercolor-blob,
+  .text-shimmer,
+  .text-gold,
+  .sparkle,
+  .marquee-track,
+  .seal-pulse,
+  .spin-slow,
+  .sway,
+  .button-sheen::after {
+    animation: none !important;
+  }
+
+  .petal {
+    display: none;
+  }
+}
