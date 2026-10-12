@@ -96,7 +96,10 @@ export function StackedName({
         />
         <span className={cn('inline-block', t.shadow)}>
           <motion.span
-            className={cn('inline-block leading-[1.05]', t.text)}
+            className={cn(
+              '-mx-[0.25em] -mt-[0.18em] inline-block px-[0.45em] pt-[0.4em] leading-[1.05]',
+              t.text,
+            )}
             initial={{ opacity: 0, scale: 0.6, y: '0.12em' }}
             animate={
               show
@@ -129,7 +132,12 @@ export function StackedName({
           style={{ originX: 1 }}
           transition={{ duration: 0.9, ease: EASE, delay: restDelay + 0.5 }}
         />
-        <span className={cn('inline-block whitespace-nowrap', t.text)}>
+        <span
+          className={cn(
+            '-mx-[0.15em] inline-block whitespace-nowrap px-[0.35em]',
+            t.text,
+          )}
+        >
           {restLetters.map((ch, i) => (
             <motion.span
               key={`${ch}-${i}`}
