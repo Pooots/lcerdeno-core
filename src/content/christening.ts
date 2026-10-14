@@ -52,6 +52,7 @@ export const christening = {
 
   godparents: {
     ninang: [
+      'Joyce',
       'Faye',
       'Rhia',
       'Matet',
@@ -72,7 +73,6 @@ export const christening = {
       'Diana',
       'Danica',
       'Janette',
-      'Janeth',
     ],
     ninong: [
       'JM',
