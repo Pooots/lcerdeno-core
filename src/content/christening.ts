@@ -73,6 +73,7 @@ export const christening = {
       'Diana',
       'Danica',
       'Janette',
+      'Rachelle',
     ],
     ninong: [
       'JM',
@@ -89,6 +90,7 @@ export const christening = {
       'Tonton',
       'JB',
       'Ogie',
+      'Jorge',
     ],
   },
 
